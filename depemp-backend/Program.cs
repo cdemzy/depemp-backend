@@ -18,8 +18,13 @@ builder.Services.AddCors(options =>
         });
 });
 
-
 var app = builder.Build();
+
+// Enable CORS
+app.UseCors(options => options
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 
 // Configure the HTTP request pipeline.
 
