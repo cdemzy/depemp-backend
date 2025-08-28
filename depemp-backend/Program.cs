@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,13 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader();
         });
 });
+
+// JSON Serializer
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options => 
+        options.SerializerSettings
+               .ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore).AddNewtonsoftJson(options => 
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
 var app = builder.Build();
 
