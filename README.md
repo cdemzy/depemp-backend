@@ -1,1 +1,4 @@
-# depemp-backend
+# DepEmp-backend
+Stack
+- C#
+- ASP.NET
