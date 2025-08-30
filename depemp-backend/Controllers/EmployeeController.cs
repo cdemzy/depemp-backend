@@ -12,9 +12,11 @@ namespace depemp_backend.Controllers
     {
 
         private readonly IConfiguration _configuration;
-        public EmployeeController(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public EmployeeController(IConfiguration configuration, IWebHostEnvironment env)
         {
             _configuration = configuration;
+            _env = env;
         }
 
         // Get Method
@@ -140,6 +142,28 @@ namespace depemp_backend.Controllers
             return new JsonResult("Deleted Successfully");
         }
 
+        [HttpPost("SaveFile")]
+        public JsonResult SaveFile()
+        {
+            try
+            {
+                var httpRequest = Request.Form;
+                var postedFile = httpRequest.Files[0];
+                string filename = postedFile.FileName;
+                var physicalPath = _env.ContentRootPath + "/Photos/" + filename;
 
+                using (var stream = new FileStream(physicalPath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                }
+
+                return new JsonResult(filename + " Successfully uploaded");
+            }
+            catch (Exception)
+            {
+
+                return new JsonResult("anonymous.png");
+            }
+        }
     }
 }
